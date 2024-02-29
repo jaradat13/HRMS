@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Department Detail{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center text-uppercase font-weight-bold text-secondary">Department Detail</h3>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Department: {{ department.name }}</h5>
+            <p class="card-text"><strong>Description:</strong> {{ department.description }}</p>
+            <p class="card-text"><strong>Head:</strong>
+                {% if department_head %}
+                    {{ department_head.first_name }} {{ department_head.last_name }}
+                {% else %}
+                    Unassigned
+                {% endif %}
+            </p>
+            <p class="card-text"><strong>Employees:</strong></p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Section</th>
+                        <th>Job Title</th>
+                        <th>Actions</th> <!-- New column for actions -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in department.employees.all %}
+                        <tr>
+                            <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                            <td>{{ employee.section.name }}</td>
+                            <td>{{ employee.job_title.name }}</td>
+                            <td>
+                                <a href="{% url 'employee-detail' employee.pk %}" class="btn btn-sm btn-secondary">View</a>
+
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No employees in this department</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <table class="buttons mb-4">
+        <tr>
+            <td><a href="{% url 'department-list' %}" class="btn btn-secondary">Back to Departments List</a></td>
+            <td><a href="{% url 'export_department_employees_to_excel' department.pk %}" class="btn btn-success">Export to Excel</a></td>
+            
+        </tr>
+    </table>  
+
+    
+</div>
+{% endblock %}

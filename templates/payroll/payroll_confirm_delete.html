@@ -1,0 +1,15 @@
+<!-- payroll_confirm_delete.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Confirm Deletion</h1>
+    <p>Are you sure you want to delete payroll for {{ payroll.employee }}?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'payroll-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

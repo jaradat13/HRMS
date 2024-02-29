@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Social Security Deductions for Pay Period {{ pay_period }}</h1>
+    <a href="{% url 'pay-period-list' %}" class="btn btn-secondary mt-3">Back</a>
+    
+    <!-- Export to Excel button -->
+    <!-- Link this button to the endpoint for exporting to Excel -->
+<a href="{% url 'export-ss_deductions-excel' pay_period.id %}" class="btn btn-success mt-3">Export to Excel</a>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Hire Date</th>
+                    <th>Job Title</th>
+                    <th>Basic Salary</th>
+                    <th>Allowances</th>
+                    <th>Employee SS Deduction</th>
+                    <th>Company SS Deduction</th>
+                    <th>Social Security Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in ss_deductions_data %}
+                <tr>
+                    <td>{{ item.employee_name }}</td>
+                    <td>{{ item.hire_date }}</td>
+                    <td>{{ item.position }}</td>
+                    <td class="text-right">{{ item.basic_salary}}</td>
+                    <td class="text-right">{{ item.allowance}}</td>
+                    <td class="text-right">{{ item.employee_ss_deduction}}</td>
+                    <td class="text-right">{{ item.company_ss_deduction}}</td>
+                    <td>{{ item.ssn_number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">Total Employee SS Deduction</td>
+                    <td class="text-right">{{ total_employee_ss_deduction}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="6">Total Company SS Deduction</td>
+                    <td class="text-right">{{ total_company_ss_deduction}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="6">Total SS Deduction for All Employees</td>
+                    <td class="text-right">{{ total_ss_deduction }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}

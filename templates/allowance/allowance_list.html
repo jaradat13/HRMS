@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Allowances</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Mobile Allowance</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'mobile_allowance_create' %}" class="btn btn-primary mb-3">Create New</a>
+                    <ul class="list-group">
+                        {% for allowance in mobile_allowances %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ allowance.amount }}</span>
+                            <div>
+                                <a href="{% url 'mobile_allowance_update' allowance.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'mobile_allowance_delete' allowance.pk %}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Travel Allowance</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'travel_allowance_create' %}" class="btn btn-primary mb-3">Create New</a>
+                    <ul class="list-group">
+                        {% for allowance in travel_allowances %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ allowance.amount }}</span>
+                            <div>
+                                <a href="{% url 'travel_allowance_update' allowance.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'travel_allowance_delete' allowance.pk %}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Medical Allowance</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'medical_allowance_create' %}" class="btn btn-primary mb-3">Create New</a>
+                    <ul class="list-group">
+                        {% for allowance in medical_allowances %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ allowance.amount }}</span>
+                            <div>
+                                <a href="{% url 'medical_allowance_update' allowance.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'medical_allowance_delete' allowance.pk %}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Housing Allowance</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'housing_allowance_create' %}" class="btn btn-primary mb-3">Create New</a>
+                    <ul class="list-group">
+                        {% for allowance in housing_allowances %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ allowance.amount }}</span>
+                            <div>
+                                <a href="{% url 'housing_allowance_update' allowance.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'housing_allowance_delete' allowance.pk %}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Uniform Allowance</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'uniform_allowance_create' %}" class="btn btn-primary mb-3">Create New</a>
+                    <ul class="list-group">
+                        {% for allowance in uniform_allowances %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ allowance.amount }}</span>
+                            <div>
+                                <a href="{% url 'uniform_allowance_update' allowance.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'uniform_allowance_delete' allowance.pk %}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Other Allowance</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'other_allowance_create' %}" class="btn btn-primary mb-3">Create New</a>
+                    <ul class="list-group">
+                        {% for allowance in other_allowances %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ allowance.amount }}</span>
+                            <div>
+                                <a href="{% url 'other_allowance_update' allowance.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'other_allowance_delete' allowance.pk %}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

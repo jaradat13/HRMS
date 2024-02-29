@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4" id="payroll-slip">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-primary">Payroll Slip</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Employee Name:</strong> {{ payroll.employee }}</p>
+                    <p><strong>Employee ID:</strong> {{ payroll.employee.employee_id }}</p>
+                    <p><strong>Company Name:</strong> {{ company_name }}</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <img src="{{ company_logo }}" alt="Company Logo" class="img-fluid" style="max-height: 50px;">
+                    <button onclick="printPayroll()" class="btn btn-primary d-print-none">Print</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6><strong>Earnings</strong> </h6>
+                    <p>Basic Salary: {{ payroll.basic_salary }}</p>
+                    <p>Mobile Allowance: {{ payroll.mobile_allowance }}</p>
+                    <p>Housing Allowance: {{ payroll.housing_allowance }}</p>
+                    <p>Travel Allowance: {{ payroll.travel_allowance }}</p>
+                    <p>Uniform Allowance: {{ payroll.uniform_allowance}}</p>
+                    <p>Medical Allowance: {{ payroll.medical_allowance}}</p>
+                    <p>Other Allowance: {{ payroll.other_allowance}}</p>
+                    <p>Total Allowances: {{ payroll.total_allowance }}</p>
+                 </div>
+                    <div class="col-md-6">
+                    <h6><strong>Deductions</strong> </h6>
+                    <p>SS Deduction: {{ payroll.employee_ss_deduction }}</p>
+                    <p>IncomeTAx Deduction: {{ payroll.income_tax_deduction }}</p>
+                    <p>Other Deductions: {{ payroll.other_deductions }}</p>
+                    <p>Total Deductions: {{ payroll.employee_total_deduction }}</p>
+                        
+                    </div>
+            </div>
+            <hr class="my-3">
+            <div class="row text-end">
+                <div class="col-12">
+                    <p class="h6"><strong>Net Salary:</strong> {{ payroll.net_salary }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function printPayroll() {
+        var now = new Date();
+        var formattedDate = now.toLocaleString();
+        var printContent = document.getElementById('payroll-slip');
+        if (printContent) {
+            printContent.innerHTML = "<p> " + formattedDate + "</p>" + printContent.innerHTML;
+            printContent.innerHTML += "<hr>";
+            var originalContent = document.body.innerHTML;
+            window.print();
+            printContent.innerHTML = originalContent;
+        } else {
+            console.error("Payroll slip content not found.");
+        }
+    }
+</script>
+
+{% endblock %}

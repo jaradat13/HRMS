@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Delete Section</h1>
+<p>Are you sure you want to delete "{{ object.name }} in {{ object.department }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Confirm</button>
+  <a href="{% url 'department_list' %}">Cancel</a>
+</form>
+
+{% endblock %}
+

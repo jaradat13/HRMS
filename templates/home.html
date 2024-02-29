@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Settings</h4>
+    <ul class="settings-list">
+        <li><a href="{% url 'company-list' %}">Company</a></li>
+        <li><a href="{% url 'department-list' %}">Departments</a></li>
+        <li><a href="{% url 'section-list' %}">Sections</a></li>
+        <li><a href="{% url 'jobtitle-list' %}">Job Titles</a></li>
+        <li><a href="{% url 'employee-list' %}">Employee</a></li>
+        <li><a href="{% url 'allowance_list' %}">Allowances</a></li>
+        <li><a href="{% url 'income-tax-percentage-list' %}">Income Tax</a></li>
+        <li><a href="{% url 'list_ss_percentages' %}">Social Security</a></li>
+        <li><a href="{% url 'pay-period-list' %}">Pay Periods</a></li>
+        <li><a href="{% url 'allowance_payments' %}"> Allowance history</a></li>
+    </ul>
+{% endblock %}

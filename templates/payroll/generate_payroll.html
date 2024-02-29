@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <h1>Payroll Details</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Basic Salary</th>
+                <th>Gross Salary</th>
+                <th>Allowance</th>
+                <th>Total Allowance</th>
+                <th>Employee SS Deduction</th>
+                <th>Company SS Deduction</th>
+                <th>Income Tax Deduction</th>
+                <th>Total Deductions</th>
+                <th>Net Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.employee_payroll.basic_salary }}</td>
+                <td>{{ employee.employee_payroll.gross_salary }}</td>
+                <td>{{ employee.employee_payroll.allowance }}</td>
+                <td>{{ employee.employee_payroll.total_allowance }}</td>
+                <td>{{ employee.employee_payroll.employee_ss_deduction }}</td>
+                <td>{{ employee.employee_payroll.company_ss_deduction }}</td>
+                <td>{{ employee.employee_payroll.income_tax_deduction }}</td>
+                <td>{{ employee.employee_payroll.total_deductions }}</td>
+                <td>{{ employee.employee_payroll.net_salary }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">No employees found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}

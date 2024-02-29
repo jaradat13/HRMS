@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Employee Search Results{% endblock %}
+{% block content %}
+<div class="container">
+    <table class="buttons mb-4">
+        <tr>
+            <td><a href="{% url 'employee-create' %}" class="btn btn-info">New Employee</a></td>
+            <td><a href="{% url 'export_employees_excel' %}" class="btn btn-primary">Export Employees</a></td>
+            <td><a href="{% url 'employee-import' %}" class="btn btn-success">Import Employees</a></td>
+            <td> <a href="{% url 'search_employee_payroll' %}" class="btn btn-primary">Payroll Search</a></td>
+            <td> <a href="{% url 'employee_search' %}" class="btn btn-primary">Employee Search</a></td>
+        </tr>
+    </table>    
+
+    {% if query %}
+    <p class="text-center">Showing results for query: "{{ query }}"</p>
+
+    <div class="card-columns">
+        {% for employee in results %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ employee.first_name }} {{ employee.last_name }}</h5>
+                <p class="card-text">ID: {{ employee.employee_id }}</p>
+                <p class="card-text">Department: {{ employee.department }}</p>
+                <a href="{% url 'employee-detail' employee.employee_id %}" class="btn btn-primary btn-sm">View Record</a>
+                <a href="{% url 'employee_history' employee.employee_id %}" class="btn btn-primary btn-sm">View History</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not results %}
+    <p class="text-center">No results found.</p>
+    {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}

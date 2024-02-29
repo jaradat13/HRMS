@@ -1,0 +1,12 @@
+<!-- employee_import.html -->
+{% extends 'base.html' %}
+{% block title %}Import Employees{% endblock %}
+{% block content %}
+    <h2>Import Employees</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="excel_file">Upload Excel file:</label>
+        <input type="file" name="excel_file" accept=".xlsx">
+        <button type="submit">Import</button>
+    </form>
+{% endblock %}

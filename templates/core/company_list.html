@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Company Info{% endblock %}
+{% block content %}
+<div class="container">
+    <h3 class="text-center text-uppercase font-weight-bold text-secondary">Company</h3>
+    {% if not companies %}
+    <div class="mb-3">
+        <a href="{% url 'company-create' %}" class="btn btn-success">New Company</a>
+    </div>
+    {% endif %}
+
+    <div>
+        {% for company in companies %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ company.name }}</h5>
+                    <p class="card-text">{{ company.country }}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group" role="group" aria-label="Actions">
+                        <!-- Link to department_detail view -->
+                        <a href="{% url 'company-detail' company.pk %}" class="btn btn-primary">Details</a>
+                        <a href="{% url 'company-update' company.pk %}" class="btn btn-info"
+                            style="margin-left: 5px;">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

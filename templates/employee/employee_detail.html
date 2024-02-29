@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">{{ employee.first_name }} {{ employee.second_name }} {{ employee.last_name }}</h2>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                {% if employee.image %}
+                                    <img src="{{ employee.image.url }}" alt="{{ employee.first_name }}'s Profile Picture" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                {% else %}
+                                    <i class="fa fa-user-circle-o fa-5x text-muted" aria-hidden="true"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">ID Number:</div>
+                                <div class="col-md-8">{{ employee.employee_id }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Date of Birth:</div>
+                                <div class="col-md-8">{{ employee.date_of_birth }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Nationality:</div>
+                                <div class="col-md-8">{{ employee.nationality }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Email:</div>
+                                <div class="col-md-8">{{ employee.email }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Phone Number:</div>
+                                <div class="col-md-8">{{ employee.phone_number }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Address:</div>
+                                <div class="col-md-8">{{ employee.address }}</div>
+                            </div>
+                            <hr>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Emergency Contact Name:</div>
+                                <div class="col-md-8">{{ employee.emergency_contact_name }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Emergency Contact Phone:</div>
+                                <div class="col-md-8">{{ employee.emergency_contact_phone }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Number of Dependents:</div>
+                                <div class="col-md-8">{{ employee.number_of_dependents }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Department:</div>
+                                <div class="col-md-8">{{ employee.department }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Section:</div>
+                                <div class="col-md-8">{{ employee.section }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Job Title:</div>
+                                <div class="col-md-8">{{ employee.job_title }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Employment Type:</div>
+                                <div class="col-md-8">{{ employee.employment_type }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Reporting Manager:</div>
+                                <div class="col-md-8">{{ employee.department.head }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Hire Date:</div>
+                                <div class="col-md-8">{{ employee.hire_date }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 font-weight-bold">Is Active:</div>
+                                <div class="col-md-8">{{ employee.is_active }}</div>
+                            </div>
+                            <!-- Add more rows for other fields -->
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Work Information</h3>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Social Security Number:</div>
+                        <div class="col-md-8">{{ employee.social_security_number }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Tax Identification Number:</div>
+                        <div class="col-md-8">{{ employee.tax_identification_number }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Bank Name:</div>
+                        <div class="col-md-8">{{ employee.bank_name }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Bank Branch:</div>
+                        <div class="col-md-8">{{ employee.bank_branch }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Bank Account Number:</div>
+                        <div class="col-md-8">{{ employee.bank_account_number }}</div>
+                    </div>
+                    <!-- Add more rows for work information -->
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Financial Information</h3>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Basic Salary:</div>
+                        <div class="col-md-8">{{ employee.basic_salary }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Mobile Allowance:</div>
+                        <div class="col-md-8">{{ employee.mobile_allowance }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Housing Allowance:</div>
+                        <div class="col-md-8">{{ employee.housing_allowance }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Travel Allowance:</div>
+                        <div class="col-md-8">{{ employee.travel_allowance }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Medical Allowance:</div>
+                        <div class="col-md-8">{{ employee.medical_allowance }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Uniform Allowance:</div>
+                        <div class="col-md-8">{{ employee.uniform_allowance }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Other Allowance:</div>
+                        <div class="col-md-8">{{ employee.other_allowance }}</div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        {% if employee.copy_of_id_card %}
+                        <div class="col-md-4 font-weight-bold">Copy of ID Card:</div>
+                        <div class="col-md-8"><a href="{{ employee.copy_of_id_card.url }}">{{ employee.copy_of_id_card.name }}</a></div>
+                    {% else %}
+                        <div class="col-md-4 font-weight-bold">Copy of ID Card:</div>
+                        <div class="col-md-8">No file associated</div>
+                    {% endif %}
+                    </div>
+                    <div class="row mb-3">
+                        {% if employee.copy_of_passport %}
+                        <div class="col-md-4 font-weight-bold">Copy of Passport:</div>
+                        <div class="col-md-8"><a href="{{ employee.copy_of_passport.url }}">{{ employee.copy_of_passport.name }}</a></div>
+                    {% else %}
+                        <div class="col-md-4 font-weight-bold">Copy of Passport:</div>
+                        <div class="col-md-8">No file associated</div>
+                    {% endif %}
+                    </div>
+                    <div class="row mb-3">
+                        {% if employee.copy_of_degree %}
+                        <div class="col-md-4 font-weight-bold">Copy of Degree:</div>
+                        <div class="col-md-8"><a href="{{ employee.copy_of_degree.url }}">{{ employee.copy_of_degree.name }}</a></div>
+                    {% else %}
+                        <div class="col-md-4 font-weight-bold">Copy of Degree:</div>
+                        <div class="col-md-8">No file associated</div>
+                    {% endif %}
+                    </div>
+                    <div class="row mb-3">
+                    {% if employee.copy_of_visas %}
+                    <div class="col-md-4 font-weight-bold">Copy of Visas:</div>
+                    <div class="col-md-8"><a href="{{ employee.copy_of_visas.url }}">{{ employee.copy_of_visas.name }}</a></div>
+                    {% else %}
+                    <div class="col-md-4 font-weight-bold">Copy of Visas:</div>
+                    <div class="col-md-8">No file associated</div>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'employee-update' employee.pk %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'employee-list' %}" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

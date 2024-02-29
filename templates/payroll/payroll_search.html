@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Payroll Search Results{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Search Payroll</h2>
+    <form method="get" action="{% url 'search_employee_payroll' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search by first name, last name, or ID">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </div>
+    </form>
+    {% if payrolls %}
+    <p class="text-center">Showing results for query: "{{ query }}"</p>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Department</th>
+                    <th>Month</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payroll in payrolls reversed %} {# Reversed iteration #}
+                <tr>
+                    <td>{{ payroll.employee.first_name }} {{ payroll.employee.last_name }}</td>
+                    <td>{{ payroll.employee.id }}</td>
+                    <td>{{ payroll.employee.department }}</td>
+                    <td>{{ payroll.pay_period }}</td>
+
+                    <td><a href="{% url 'payroll-detail' payroll.id %}" class="btn btn-primary btn-sm">View Record</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center">No results found.</p>
+    {% endif %}
+</div>
+{% endblock %}

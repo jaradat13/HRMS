@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete allowance{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Delete allowance</h2>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <p>Are you sure you want to delete the allowance "{{ allowance.title }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'allowance_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Employee and Company Percentage Values</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Percentage Values</h5>
+                </div>
+                <div class="card-body">
+                    {% if not employee_percentage and not company_percentage %}
+                        <a href="{% url 'set_ss_percentage' %}" class="btn btn-primary mb-3">Set Percentage</a>
+                    {% else %}
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Employee Percentage</th>
+                                    <th scope="col">Company Percentage</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ employee_percentage.percentage }}</td>
+                                    <td>{{ company_percentage.percentage }}</td>
+                                    <td>
+                                        <a href="{% url 'edit_ss_percentage' employee_percentage.id company_percentage.id %}" class="btn btn-info btn-sm">Edit</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

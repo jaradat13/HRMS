@@ -1,0 +1,162 @@
+.employee-details {
+    max-width: 600px;
+    margin: 25px auto 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.employee-details h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.details {
+    margin-top: 20px;
+}
+
+.detail-item {
+    margin-bottom: 10px;
+}
+
+.detail-item strong {
+    font-weight: bold;
+}
+.settings-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+    gap: 10px; /* Gap between items */
+    list-style: none;
+}
+
+.settings-list li {
+    padding: 5px;
+}
+
+.settings-list a {
+    text-decoration: none;
+    color: #333; /* Adjust color as needed */
+}
+
+.settings-list a:hover {
+    text-decoration: underline;
+    color: #db3d3d; /* Adjust color as needed */
+}
+
+.buttons {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+td {
+    border-bottom: 1px solid #ddd;
+}
+
+td:first-child, th:first-child {
+    border-top-left-radius: 8px;
+}
+
+td:last-child, th:last-child {
+    border-top-right-radius: 8px;
+}
+
+td:last-child {
+    text-align: right;
+}
+
+/* CSS for the sidebar */
+.sidebar {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.sidebar h4 {
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.settings-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.settings-list li {
+  margin-bottom: 10px;
+}
+
+.settings-list a {
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.settings-list a:hover {
+  color: #007bff;
+}
+/* Structure */
+header, aside, main {
+    padding: 20px;
+}
+
+nav ul {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block; /* Make links horizontal */
+    margin-right: 20px;
+}
+
+/* Typography */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+h1, h2 {
+    font-family: 'Georgia', serif;
+}

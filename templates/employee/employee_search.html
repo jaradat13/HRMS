@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Employee Search Results{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Employees</h2>
+    <form method="get" action="{% url 'employee_search' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search by first name, last name, or ID">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </div>
+    </form>
+    {% if query %}
+    <p class="text-center">Showing results for query: "{{ query }}"</p>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Department</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in results %}
+                <tr>
+                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>{{ employee.employee_id }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td><a href="{% url 'employee-detail' employee.employee_id %}" class="btn btn-primary btn-sm">View Record</a></td>
+                    <td><a href="{% url 'employee_history' employee.employee_id %}" class="btn btn-primary btn-sm">View History</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if not results %}
+    <p class="text-center">No results found.</p>
+    {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}

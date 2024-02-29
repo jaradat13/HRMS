@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if payrolls %}
+        <h1 class="mb-4">Payroll for {{ selected_month }}</h1>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Basic Salary</th>
+                        <th>Mobile Allowance</th>
+                        <th>Travel Allowance</th>
+                        <th>Housing Allowance</th>
+                        <th>Medical Allowance</th>
+                        <th>Uniform Allowance</th>
+                        <th>Other Allowance</th>
+                        <th>Total Allowance</th>
+                        <th>Gross Salary</th>
+                        <th>SS Deduction</th>
+                        <th>Income Tax Deduction</th>
+                        <th>other Deduction</th>
+                        <th>Total Deductions</th>
+                        <th>Net Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payroll in payrolls %}
+                        <tr>
+                            <td>{{ payroll.employee }}</td>
+                            <td>{{ payroll.basic_salary |floatformat:2}}</td>
+                            <td>{{ payroll.mobile_allowance |floatformat:2}}</td>
+                            <td>{{ payroll.travel_allowance |floatformat:2}}</td>
+                            <td>{{ payroll.housing_allowance |floatformat:2}}</td>
+                            <td>{{ payroll.medical_allowance |floatformat:2}}</td>
+                            <td>{{ payroll.uniform_allowance|floatformat:2 }}</td>
+                            <td>{{ payroll.other_allowance |floatformat:2}}</td>
+                            <td>{{ payroll.total_allowance |floatformat:2}}</td>
+                            <td>{{ payroll.gross_salary |floatformat:2}}</td>
+                            <td>{{ payroll.employee_ss_deduction |floatformat:2}}</td>
+                            <td>{{ payroll.income_tax_deduction |floatformat:2}}</td>
+                            <td>{{ payroll.other_deductions |floatformat:2}}</td>
+                            <td>{{ payroll.employee_total_deduction|floatformat:2}}</td>
+                            <td>{{ payroll.net_salary |floatformat:2}}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="12">No payroll records found.</td>
+                        </tr>
+                    {% endfor %}
+
+                    {% if is_last_page %}
+                        <tr>
+                            <td colspan="0">Totals:</td>
+                            <td>{{ totals.total_basic_salary |floatformat:2}}</td>
+                            <td>{{ totals.total_mobile_allowance |floatformat:2}}</td>
+                            <td>{{ totals.total_travel_allowance |floatformat:2}}</td>
+                            <td>{{ totals.total_housing_allowance |floatformat:2}}</td>
+                            <td>{{ totals.total_medical_allowance |floatformat:2}}</td>
+                            <td>{{ totals.total_uniform_allowance |floatformat:2}}</td>
+                            <td>{{ totals.total_other_allowance |floatformat:2}}</td>
+                            <td>{{ totals.total_total_allowance|floatformat:2 }}</td>
+                            <td>{{ totals.total_gross_salary |floatformat:2}}</td>
+                            <td>{{ totals.total_employee_ss_deduction |floatformat:2}}</td>
+                            <td>{{ totals.total_income_tax_deduction |floatformat:2}}</td>
+                            <td>{{ totals.total_other_deductions |floatformat:2}}</td>
+                            <td>{{ totals.total_employee_total_deduction |floatformat:2}}</td>
+                            <td>{{ totals.total_net_salary |floatformat:2}}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if payrolls.paginator.num_pages > 1 %}
+    <ul class="pagination">
+        {% if payrolls.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ payrolls.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ payrolls.number }}</span></li>
+        {% if payrolls.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ payrolls.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ payrolls.paginator.num_pages }}">Last &raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+    {% else %}
+        <p>No payroll records found.</p>
+    {% endif %}
+{% endblock %}

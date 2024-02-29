@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Departments List{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center text-uppercase font-weight-bold text-secondary">Departments List</h3>
+    <div class="mb-3">
+        <a href="{% url 'department-create' %}" class="btn btn-success">Create New Department</a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for department in departments %}
+<div class="col">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">{{ department.name }}</h5>
+            <p class="card-text">{{ department.description }}</p>
+         
+            <p class="card-text">Employees Count: {{ department.num_employees }}</p>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group" role="group" aria-label="Actions">
+                <!-- Link to department_detail view -->
+                <a href="{% url 'department-detail' department.pk %}" class="btn btn-info">Details</a>
+
+            </div>      
+        </div>
+    </div>
+</div>
+{% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <body>
+        <div class="container">
+    <h1>Company Detail</h1>
+    <p><strong>Name:</strong> {{ company.name }}</p>
+    <p><strong>Phone:</strong> {{ company.phone }}</p>
+    <p><strong>Email:</strong> {{ company.email }}</p>
+    <p><strong>Website:</strong> {{ company.website }}</p>
+    <p><strong>Address:</strong> {{ company.address }}</p>
+    <p><strong>Country:</strong> {{ company.country }}</p>
+    <!-- Display company logo -->
+    {% if company.logo %}
+        <img src="{{ company.logo.url }}" alt="Company Logo" width="100">
+    {% else %}
+        <p>No logo available</p>
+    {% endif %}
+    <!-- Display company icon -->
+    {% if company.icon %}
+        <img src="{{ company.icon.url }}" alt="Company Icon" width="50">
+    {% else %}
+        <p>No icon available</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'company-list' %}" class="btn btn-secondary">Back </a>
+</div>
+
+        </body>
+    {% endblock %}

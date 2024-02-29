@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Pay Periods</h1>
+    <a href="{% url 'pay-period-create' %}" class="btn btn-primary mb-3">Create New</a>
+    <ul class="list-group">
+        {% for period in pay_periods %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">{{ period.month }}   {{ period.year }} </h5>
+                        {% if period.is_closed %}
+                            <small>{{ 'Payroll Closed' }}</small>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if not period.is_closed %}   
+                            <a href="{% url 'pay-period-delete' period.pk %}" class="btn btn-danger btn-sm mr-2">Delete</a>
+                            <button onclick="generatePayroll({{ period.pk }})" class="btn btn-primary btn-sm">Generate Payroll</button>
+                            <a href="{% url 'payroll-list' period.month period.year %}" class=" btn btn-primary btn-sm ">Preview Payroll</a>
+                            <a href="{% url 'close_payroll_period' period.pk %}" class="btn btn-primary btn-sm">Close Payroll Period</a>
+                        {% else %}
+                            <a href="{% url 'payroll-list' period.month period.year  %}" class="btn btn-primary btn-sm">Final Payroll</a>
+                            <a href="{% url 'income-tax-deductions' period.id %}" class="btn btn-primary btn-sm">Income Tax Sheet</a>
+                            <a href="{% url 'export_payroll_excel' period.pk %}" class="btn btn-primary btn-sm">Export Payroll</a>
+                            <a href="{% url 'export-ss_deductions-excel' period.pk %}" class="btn btn-primary btn-sm">SSN Sheet</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    function generatePayroll(periodId) {
+        fetch('/generate-payroll/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({'period_id': periodId})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Log response data for debugging
+            if (data.success) {
+                alert(data.message); // Display pop-up message
+                location.reload();  // Refresh the page
+            } else {
+                alert(data.message); // Display error message
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+{% endblock %}

@@ -175,7 +175,6 @@ def generate_payroll(request):
             other_deductions = Decimal(employee.other_deductions.amount) if employee.other_deductions else 0
             other_allowance = Decimal(employee.other_allowance.amount) if employee.other_allowance else 0
 
-            # TODO: Handle rate-based allowances
 
             # Calculate total allowance for the employee
             total_allowance = Decimal(

@@ -8,10 +8,10 @@ from allowance.models import TravelAllowance, MobileAllowance
 from core.models import JobTitle, Department, Section
 from .forms import EmployeeForm, EmployeeImportForm
 import pandas as pd
-from django.http import HttpResponse
-from django.views.generic import View
-from openpyxl import Workbook
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.views import View
+from openpyxl import Workbook
 from .models import Employee
 
 
@@ -80,8 +80,9 @@ def employee_search(request):
     return render(request, 'employee/employee_search.html', {'results': results, 'query': query})
 
 
+
+
 class ExportEmployeesExcelView(View):
-    @staticmethod
     def get(self, request, *args, **kwargs):
         # Query all employees
         employees = Employee.objects.all()
@@ -140,6 +141,7 @@ class ExportEmployeesExcelView(View):
         workbook.save(response)
 
         return response
+
 
 
 @transaction.atomic

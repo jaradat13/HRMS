@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from auditlog.registry import auditlog
 from django.db import models
 
 
@@ -27,3 +28,6 @@ class SocialSecurityDeductions(models.Model):
         return f"{self.employee.first_name} {self.employee.last_name} - {self.pay_period}"
 
 
+auditlog.register(EmployeeSSPercentage)
+auditlog.register(CompanySSPercentage)
+auditlog.register(SocialSecurityDeductions)

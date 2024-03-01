@@ -2,7 +2,7 @@ from django.urls import path
 
 from payroll.views import search_employee_payroll_view
 from . import views
-from .views import ExportEmployeesExcelView, import_employees, employee_history
+from .views import ExportEmployeesExcelView, import_employees
 
 urlpatterns = [
     path('employees/', views.employee_list_view, name='employee-list'),
@@ -14,5 +14,4 @@ urlpatterns = [
     path('export-employees-excel/', ExportEmployeesExcelView.as_view(), name='export_employees_excel'),
     path('import/', import_employees, name='employee-import'),
     path('search/', search_employee_payroll_view, name='search_employee_payroll'),
-    path('employees/<int:pk>/history/', employee_history, name='employee_history'),
 ]

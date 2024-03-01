@@ -1,8 +1,5 @@
-from django.conf import settings
+from auditlog.models import LogEntry
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from simple_history.models import HistoricalRecords
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -10,8 +7,7 @@ from deductions.models import Deductions
 from socialsecurity.models import EmployeeSSPercentage
 from incometax.models import IncomeTaxPercentage
 from payroll.models import Payroll
-from django.utils import timezone
-
+from auditlog.registry import auditlog
 
 
 def validate_image_size(value):
@@ -144,15 +140,6 @@ class Employee(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class EmployeeAuditLog(models.Model):
-    ACTION_CHOICES = (
-        ('C', 'Created'),
-        ('U', 'Updated'),
-        ('D', 'Deleted'),
-    )
+auditlog.register(Employee)
 
-    employee = models.ForeignKey('employee.Employee', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    action = models.CharField(max_length=1, choices=ACTION_CHOICES)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    changed_fields = models.TextField(null=True, blank=True)
+

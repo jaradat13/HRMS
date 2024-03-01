@@ -1,5 +1,7 @@
 from decimal import Decimal
 from django.db import models
+from auditlog.registry import auditlog
+
 
 
 class Allowance(models.Model):
@@ -52,3 +54,11 @@ class AllowancePayments(models.Model):
 
     def __str__(self):
         return f"{self.employee.first_name} {self.employee.last_name} - {self.pay_period}"
+
+
+auditlog.register(MobileAllowance)
+auditlog.register(TravelAllowance)
+auditlog.register(HousingAllowance)
+auditlog.register(MedicalAllowance)
+auditlog.register(UniformAllowance)
+auditlog.register(OtherAllowance)

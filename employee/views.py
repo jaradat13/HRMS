@@ -1,19 +1,17 @@
-from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import redirect
-from allowance.models import HousingAllowance, UniformAllowance, MedicalAllowance, \
-    OtherAllowance
-from allowance.models import TravelAllowance, MobileAllowance
+from allowance.models import (HousingAllowance, UniformAllowance, MedicalAllowance, OtherAllowance,TravelAllowance,
+                              MobileAllowance)
 from core.models import JobTitle, Department, Section
-from .forms import EmployeeForm, EmployeeImportForm
+from employee.forms import EmployeeForm, EmployeeImportForm
 import pandas as pd
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from openpyxl import Workbook
-from .models import Employee
-
+from employee.models import Employee
+from auditlog.models import LogEntry
 
 
 def employee_list_view(request):
@@ -26,7 +24,6 @@ def employee_detail_view(request, pk):
     return render(request, 'employee/employee_detail.html', {'employee': employee})
 
 
-@login_required
 def employee_create_view(request):
     form = EmployeeForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -35,7 +32,6 @@ def employee_create_view(request):
     return render(request, 'employee/employee_form.html', {'form': form})
 
 
-@login_required
 def employee_update_view(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     form = EmployeeForm(request.POST or None, request.FILES or None, instance=employee)
@@ -80,9 +76,8 @@ def employee_search(request):
     return render(request, 'employee/employee_search.html', {'results': results, 'query': query})
 
 
-
-
 class ExportEmployeesExcelView(View):
+    @staticmethod
     def get(self, request, *args, **kwargs):
         # Query all employees
         employees = Employee.objects.all()
@@ -141,7 +136,6 @@ class ExportEmployeesExcelView(View):
         workbook.save(response)
 
         return response
-
 
 
 @transaction.atomic
@@ -239,19 +233,3 @@ def import_employees(request):
     return render(request, 'employee/import_employees.html', {'form': form})
 
 
-
-
-@login_required
-def employee_history(request, pk):
-    employee = get_object_or_404(Employee, pk=pk)
-    history = employee.employeehistory_set.all()
-    # Access history via the related name
-
-    # Pass the authenticated user to the signal handler
-    user = request.user
-
-    return render(request, 'employee/employee_history.html', {
-        'employee': employee,
-        'history': history,
-        'user': user  # Pass the authenticated user to the template context
-    })

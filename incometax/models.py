@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from auditlog.registry import auditlog
 from django.db import models
 
 
@@ -18,3 +19,8 @@ class IncomeTaxDeductions(models.Model):
 
     def __str__(self):
         return f"{self.employee.first_name} {self.employee.last_name} - {self.pay_period}"
+
+
+
+auditlog.register(IncomeTaxPercentage)
+auditlog.register(IncomeTaxDeductions)

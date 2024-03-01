@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -110,3 +111,9 @@ class JobTitle(models.Model):
 
     def __str__(self):
         return self.name
+
+
+auditlog.register(Company)
+auditlog.register(Department)
+auditlog.register(Section)
+auditlog.register(JobTitle)

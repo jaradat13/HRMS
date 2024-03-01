@@ -1,6 +1,7 @@
 from calendar import monthrange
 from decimal import Decimal
 
+from auditlog.registry import auditlog
 from django.db import models
 from django.utils import timezone
 
@@ -76,3 +77,7 @@ class Payroll(models.Model):
 
     def __str__(self):
         return f"{self.pay_period} - {self.employee}"
+
+
+auditlog.register(PayPeriod)
+auditlog.register(Payroll)

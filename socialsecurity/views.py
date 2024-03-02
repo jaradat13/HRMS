@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from payroll.models import PayPeriod, Payroll
 from .models import EmployeeSSPercentage, CompanySSPercentage
@@ -10,6 +11,7 @@ from django.shortcuts import render, redirect
 from .forms import EmployeeSSPercentageForm, CompanySSPercentageForm
 
 
+@login_required
 def list_ss_percentages(request):
     employee_percentage = EmployeeSSPercentage.objects.first()
     company_percentage = CompanySSPercentage.objects.first()
@@ -20,6 +22,7 @@ def list_ss_percentages(request):
     return render(request, 'socialsecurity/ss_percentage_list.html', context)
 
 
+@login_required
 def set_ss_percentage(request):
     if request.method == 'POST':
         employee_form = EmployeeSSPercentageForm(request.POST, prefix='employee')
@@ -35,6 +38,7 @@ def set_ss_percentage(request):
                   {'employee_form': employee_form, 'company_form': company_form})
 
 
+@login_required
 def edit_ss_percentage(request, employee_id, company_id):
     employee_instance = get_object_or_404(EmployeeSSPercentage, pk=employee_id)
     company_instance = get_object_or_404(CompanySSPercentage, pk=company_id)
@@ -57,6 +61,7 @@ def edit_ss_percentage(request, employee_id, company_id):
     })
 
 
+@login_required
 def calculate_ss_deductions(pay_period_id):
     try:
         pay_period = get_object_or_404(PayPeriod, id=pay_period_id)
@@ -122,6 +127,7 @@ def calculate_ss_deductions(pay_period_id):
         return HttpResponseServerError(f"An error occurred: {e}")
 
 
+@login_required
 def calculate_and_show_ss_deductions(request, pay_period_id):
     try:
         ss_data = calculate_ss_deductions(pay_period_id)
@@ -132,6 +138,7 @@ def calculate_and_show_ss_deductions(request, pay_period_id):
         return HttpResponseServerError(f"An error occurred: {e}")
 
 
+@login_required
 class ExportSocialSecurityDeductionsView(View):
     def get(self, request, pay_period_id, *args, **kwargs):
         try:
@@ -176,6 +183,7 @@ class ExportSocialSecurityDeductionsView(View):
 
         # Save the workbook to the response
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename="{pay_period.year}_{pay_period.month}_SS_deductions.xlsx"'
+        response[
+            'Content-Disposition'] = f'attachment; filename="{pay_period.year}_{pay_period.month}_SS_deductions.xlsx"'
         workbook.save(response)
         return response

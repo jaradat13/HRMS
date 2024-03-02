@@ -1,4 +1,6 @@
 from decimal import Decimal
+
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import HttpResponse
 from django.views.generic import View
@@ -17,16 +19,19 @@ from django.utils import timezone
 from allowance.models import AllowancePayments
 
 
+@login_required
 def pay_period_list_view(request):
     pay_periods = PayPeriod.objects.all()
     return render(request, 'payroll/pay_period_list.html', {'pay_periods': pay_periods})
 
 
+@login_required
 def pay_period_detail_view(request, pk):
     pay_period = get_object_or_404(PayPeriod, pk=pk)
     return render(request, 'payroll/pay_period_detail.html', {'pay_period': pay_period})
 
 
+@login_required
 def pay_period_create_view(request):
     form = PayPeriodForm(request.POST or None)
     if form.is_valid():
@@ -35,6 +40,7 @@ def pay_period_create_view(request):
     return render(request, 'payroll/pay_period_form.html', {'form': form})
 
 
+@login_required
 def pay_period_update_view(request, pk):
     pay_period = get_object_or_404(PayPeriod, pk=pk)
     form = PayPeriodForm(request.POST or None, instance=pay_period)
@@ -44,6 +50,7 @@ def pay_period_update_view(request, pk):
     return render(request, 'payroll/pay_period_form.html', {'form': form})
 
 
+@login_required
 def pay_period_delete_view(request, pk):
     pay_period = get_object_or_404(PayPeriod, pk=pk)
     if request.method == 'POST':
@@ -52,6 +59,7 @@ def pay_period_delete_view(request, pk):
     return render(request, 'payroll/pay_period_confirm_delete.html', {'pay_period': pay_period})
 
 
+@login_required
 def payroll_list_view(request, month, year):
     payrolls = Payroll.objects.filter(pay_period__month=month, pay_period__year=year).order_by('id')
     month_names = {
@@ -107,6 +115,7 @@ def payroll_list_view(request, month, year):
     })
 
 
+@login_required
 def payroll_detail_view(request, pk):
     payroll = get_object_or_404(Payroll, pk=pk)
     return render(request, 'payroll/payroll_detail.html', {'payroll': payroll})
@@ -120,6 +129,7 @@ def payroll_create_view(request):
     return render(request, 'payroll/payroll_form.html', {'form': form})
 
 
+@login_required
 def payroll_update_view(request, pk):
     payroll = get_object_or_404(Payroll, pk=pk)
     form = PayrollForm(request.POST or None, instance=payroll)
@@ -129,6 +139,7 @@ def payroll_update_view(request, pk):
     return render(request, 'payroll/payroll_form.html', {'form': form})
 
 
+@login_required
 def payroll_delete_view(request, pk):
     payroll = get_object_or_404(Payroll, pk=pk)
     if request.method == 'POST':
@@ -137,6 +148,7 @@ def payroll_delete_view(request, pk):
     return render(request, 'payroll/payroll_confirm_delete.html', {'payroll': payroll})
 
 
+@login_required
 @transaction.atomic
 def generate_payroll(request):
     if request.method == 'POST':
@@ -262,6 +274,7 @@ def generate_payroll(request):
     return HttpResponseBadRequest('Invalid request method. This operation requires a POST request.')
 
 
+@login_required
 def close_payroll_period(request, period_id):
     period = get_object_or_404(PayPeriod, pk=period_id)
     period.is_closed = True
@@ -269,6 +282,7 @@ def close_payroll_period(request, period_id):
     return redirect(reverse('pay-period-list'))
 
 
+@login_required
 class ExportPayrollExcelView(View):
     @staticmethod
     def get(request, pay_period_id, *args, **kwargs):
@@ -308,6 +322,7 @@ class ExportPayrollExcelView(View):
         return response
 
 
+@login_required
 def search_employee_payroll_view(request):
     if 'q' in request.GET:
         search_term = request.GET['q']

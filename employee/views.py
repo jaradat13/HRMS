@@ -1,29 +1,35 @@
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import redirect
-from allowance.models import (HousingAllowance, UniformAllowance, MedicalAllowance, OtherAllowance,TravelAllowance,
+from allowance.models import (HousingAllowance, UniformAllowance, MedicalAllowance, OtherAllowance, TravelAllowance,
                               MobileAllowance)
 from core.models import JobTitle, Department, Section
-from employee.forms import EmployeeForm, EmployeeImportForm
-import pandas as pd
+from employee.forms import EmployeeForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from openpyxl import Workbook
-from employee.models import Employee, Nationality, EmploymentType, Degree, Certification
-from auditlog.models import LogEntry
+from employee.models import Nationality, EmploymentType, Degree, Certification
+from django.db import transaction
+from .models import Employee
+from .forms import EmployeeImportForm
+import pandas as pd
 
 
+@login_required
 def employee_list_view(request):
     employees = Employee.objects.all()
     return render(request, 'employee/employee_list.html', {'employees': employees})
 
 
+@login_required
 def employee_detail_view(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     return render(request, 'employee/employee_detail.html', {'employee': employee})
 
 
+@login_required
 def employee_create_view(request):
     form = EmployeeForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -32,6 +38,7 @@ def employee_create_view(request):
     return render(request, 'employee/employee_form.html', {'form': form})
 
 
+@login_required
 def employee_update_view(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     form = EmployeeForm(request.POST or None, request.FILES or None, instance=employee)
@@ -48,6 +55,7 @@ def employee_update_view(request, pk):
     return render(request, 'employee/employee_form.html', {'form': form})
 
 
+@login_required
 def employee_delete_view(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     if request.method == 'POST':
@@ -56,6 +64,7 @@ def employee_delete_view(request, pk):
     return render(request, 'employee/employee_confirm_delete.html', {'employee': employee})
 
 
+@login_required
 def employee_search(request):
     # Get the query string from the URL parameters
     query = request.GET.get('q')
@@ -76,6 +85,7 @@ def employee_search(request):
     return render(request, 'employee/employee_search.html', {'results': results, 'query': query})
 
 
+@login_required
 class ExportEmployeesExcelView(View):
     def get(self, request, *args, **kwargs):
         employees = Employee.objects.all()
@@ -126,12 +136,7 @@ class ExportEmployeesExcelView(View):
         return response
 
 
-
-from django.db import transaction
-from .models import Employee
-from .forms import EmployeeImportForm
-import pandas as pd
-
+@login_required
 @transaction.atomic
 def import_employees(request):
     if request.method == 'POST':
@@ -233,6 +238,3 @@ def import_employees(request):
     else:
         form = EmployeeImportForm()
     return render(request, 'employee/import_employees.html', {'form': form})
-
-
-

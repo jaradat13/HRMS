@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
@@ -8,18 +9,21 @@ from .models import IncomeTaxPercentage, IncomeTaxDeductions
 from .forms import IncomeTaxPercentageForm
 
 
+@login_required
 def income_tax_percentage_list_view(request):
     income_tax_percentages = IncomeTaxPercentage.objects.all()
     return render(request, 'income_tax/income_tax_percentage_list.html',
                   {'income_tax_percentages': income_tax_percentages})
 
 
+@login_required
 def income_tax_percentage_detail_view(request, pk):
     income_tax_percentage = get_object_or_404(IncomeTaxPercentage, pk=pk)
     return render(request, 'income_tax/income_tax_percentage_detail.html',
                   {'income_tax_percentage': income_tax_percentage})
 
 
+@login_required
 def income_tax_percentage_create_view(request):
     form = IncomeTaxPercentageForm(request.POST or None)
     if form.is_valid():
@@ -28,6 +32,7 @@ def income_tax_percentage_create_view(request):
     return render(request, 'income_tax/income_tax_percentage_form.html', {'form': form})
 
 
+@login_required
 def income_tax_percentage_update_view(request, pk):
     income_tax_percentage = get_object_or_404(IncomeTaxPercentage, pk=pk)
     form = IncomeTaxPercentageForm(request.POST or None, instance=income_tax_percentage)
@@ -37,6 +42,7 @@ def income_tax_percentage_update_view(request, pk):
     return render(request, 'income_tax/income_tax_percentage_form.html', {'form': form})
 
 
+@login_required
 def income_tax_percentage_delete_view(request, pk):
     income_tax_percentage = get_object_or_404(IncomeTaxPercentage, pk=pk)
     if request.method == 'POST':
@@ -46,6 +52,7 @@ def income_tax_percentage_delete_view(request, pk):
                   {'income_tax_percentage': income_tax_percentage})
 
 
+@login_required
 class IncomeTaxDeductionsExport(View):
     def get(self, request, pay_period_id, *args, **kwargs):
         try:
@@ -90,7 +97,8 @@ class IncomeTaxDeductionsExport(View):
 
         # Save the workbook to the response
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename="{pay_period.year}_{pay_period.month}_Income_tax_deductions.xlsx"'
+        response[
+            'Content-Disposition'] = (f'attachment; filename="{pay_period.year}_{pay_period.month}'
+                                      f'_Income_tax_deductions.xlsx"')
         workbook.save(response)
         return response
-

@@ -87,7 +87,7 @@ class Employee(models.Model):
     gender = models.CharField(_('Gender'), max_length=1, choices=GENDER_CHOICES, default='', blank=False, null=False)
     marital_status = models.CharField(_('Marital status'), max_length=1, choices=MARITAL_STATUS_CHOICES, default='')
     phone_number = models.CharField(_('Phone number'), blank=False, null=False, max_length=18)
-    email = models.EmailField(_('Email'), blank=False, null=False)
+    email = models.EmailField(unique=True)
     address = models.CharField(_('Address'), max_length=100, blank=True, null=True)
     emergency_contact_name = models.CharField(_('Emergency contact name'), max_length=100, default=None, blank=True)
     emergency_contact_phone = models.CharField(_('Emergency contact phone'), blank=True,

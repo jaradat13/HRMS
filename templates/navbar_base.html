@@ -5,6 +5,9 @@
     </li>
     {% if user.is_authenticated %}
       <li class="nav-item">
+        <span class="nav-link">Welcome, {{ user }}</span>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
       </li>
     {% else %}

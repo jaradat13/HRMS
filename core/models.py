@@ -7,22 +7,6 @@ from employee.models import Employee
 
 
 class Company(models.Model):
-    """
-    A company model that stores information about a company.
-
-    Attributes:
-        name (CharField): The name of the company.
-        phone (CharField): The phone number of the company.
-        email (EmailField): The email of the company.
-        website (CharField): The website of the company.
-        address (CharField): The address of the company.
-        country (CharField): The country of the company.
-        logo (ImageField): The logo of the company.
-        icon (ImageField): The icon of the company.
-
-    Methods:
-        __str__(self): Returns the name of the company.
-    """
     name = models.CharField(max_length=50, default='')
     phone = models.CharField(max_length=50, default='')
     email = models.EmailField(default='')
@@ -37,15 +21,6 @@ class Company(models.Model):
 
 
 class Department(models.Model):
-    """
-    A model that represents a department in an organization.
-
-    Attributes:
-        name (CharField): The name of the department.
-
-    Methods:
-        __str__(self): Returns the name of the department.
-    """
     name = models.CharField(max_length=100, unique=True)
     head = models.OneToOneField(
         'employee.Employee',
@@ -60,16 +35,6 @@ class Department(models.Model):
 
 
 class Section(models.Model):
-    """
-    A model that represents a section in an organization.
-
-    Attributes:
-        name (CharField): The name of the section.
-        department (ForeignKey): The department that the section belongs to.
-
-    Methods:
-        __str__(self): Returns the name of the section.
-    """
     name = models.CharField(max_length=100)
     department = models.ForeignKey(
         Department,
@@ -82,18 +47,6 @@ class Section(models.Model):
 
 
 class JobTitle(models.Model):
-    """
-    A model that represents a job title in an organization.
-
-    Attributes:
-        name (CharField): The name of the job title.
-        department (ForeignKey): The department that the job title belongs to.
-        section (ForeignKey): The section that the job title belongs to.
-        description (CharField): A description of the job title.
-
-    Methods:
-        __str__(self): Returns the name of the job title.
-    """
     name = models.CharField(max_length=100)
     department = models.ForeignKey(
         Department,
@@ -111,6 +64,9 @@ class JobTitle(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
 
 
 auditlog.register(Company)

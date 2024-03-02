@@ -17,7 +17,6 @@ def home(request):
     return render(request, 'home.html')
 
 
-# Views for Department
 @login_required
 def department_list_view(request):
     departments = Department.objects.annotate(num_employees=Count('employees'))
@@ -60,7 +59,6 @@ def department_delete_view(request, pk):
     return render(request, 'core/department_confirm_delete.html', {'department': department})
 
 
-# Views for Company
 @login_required
 def company_list_view(request):
     companies = Company.objects.all()
@@ -143,7 +141,6 @@ def section_delete_view(request, pk):
 
 
 @login_required
-# Views for JobTitle
 def jobtitle_list_view(request):
     jobtitles = JobTitle.objects.all()
     return render(request, 'core/jobtitle_list.html', {'jobtitles': jobtitles})
@@ -191,21 +188,12 @@ def export_department_employees_to_excel(request, department_id):
     # Create a new Workbook
     wb = Workbook()
     ws = wb.active
-
-    # Add headers
     ws.append(['Name', 'Section', 'Job Title'])
-
-    # Add employee data
     for employee in employees:
         ws.append([f"{employee.first_name} {employee.last_name}", employee.section.name, employee.job_title.name])
-
-    # Create response
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{department.name}_employees.xlsx"'
-
-    # Save workbook to response
     wb.save(response)
-
     return response
 
 
@@ -213,10 +201,7 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
-        # Authentication Logic
         user = authenticate(request, username=username, password=password)
-
         if user is not None:  # Successful authentication
             login(request, user)
             return redirect('home')  # Redirect after successful login

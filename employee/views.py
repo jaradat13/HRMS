@@ -85,7 +85,6 @@ def employee_search(request):
     return render(request, 'employee/employee_search.html', {'results': results, 'query': query})
 
 
-@login_required
 class ExportEmployeesExcelView(View):
     def get(self, request, *args, **kwargs):
         employees = Employee.objects.all()

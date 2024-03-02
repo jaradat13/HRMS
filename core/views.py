@@ -1,13 +1,16 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from openpyxl.workbook import Workbook
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from employee.models import Employee
-from .forms import CompanyForm, DepartmentForm, SectionForm, JobTitleForm
+from .forms import CompanyForm, DepartmentForm, SectionForm, JobTitleForm, LoginForm
 from .models import Company, Department, Section, JobTitle
 
-
+@login_required
 def home(request):
     return render(request, 'home.html')
 
@@ -160,7 +163,6 @@ def jobtitle_delete_view(request, pk):
     return render(request, 'core/jobtitle_confirm_delete.html', {'jobtitle': jobtitle})
 
 
-
 def export_department_employees_to_excel(request, department_id):
     department = get_object_or_404(Department, pk=department_id)
     employees = department.employees.all()
@@ -186,3 +188,36 @@ def export_department_employees_to_excel(request, department_id):
     return response
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .forms import LoginForm  # Import the LoginForm class from forms.py
+from django.contrib.auth import logout
+
+
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        # Authentication Logic
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:  # Successful authentication
+            login(request, user)
+            return redirect('home')  # Redirect after successful login
+        else:
+            messages.error(request, "Invalid username or password")
+            return render(request, 'core/login.html')
+    else:
+        return render(request, 'core/login.html')
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

@@ -106,3 +106,4 @@ EMAIL_PORT = 587  # Common port for TLS
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'email@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = 'qjhi sovs dlfz tsac'  # Your email password
+LOGIN_URL = '/login/'  # Adjust the URL as per your project's setup

@@ -138,7 +138,6 @@ def calculate_and_show_ss_deductions(request, pay_period_id):
         return HttpResponseServerError(f"An error occurred: {e}")
 
 
-@login_required
 class ExportSocialSecurityDeductionsView(View):
     def get(self, request, pay_period_id, *args, **kwargs):
         try:

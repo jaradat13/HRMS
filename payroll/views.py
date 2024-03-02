@@ -120,7 +120,7 @@ def payroll_detail_view(request, pk):
     payroll = get_object_or_404(Payroll, pk=pk)
     return render(request, 'payroll/payroll_detail.html', {'payroll': payroll})
 
-
+@login_required
 def payroll_create_view(request):
     form = PayrollForm(request.POST or None)
     if form.is_valid():
@@ -282,7 +282,6 @@ def close_payroll_period(request, period_id):
     return redirect(reverse('pay-period-list'))
 
 
-@login_required
 class ExportPayrollExcelView(View):
     @staticmethod
     def get(request, pay_period_id, *args, **kwargs):

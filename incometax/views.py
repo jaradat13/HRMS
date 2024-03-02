@@ -52,7 +52,6 @@ def income_tax_percentage_delete_view(request, pk):
                   {'income_tax_percentage': income_tax_percentage})
 
 
-@login_required
 class IncomeTaxDeductionsExport(View):
     def get(self, request, pay_period_id, *args, **kwargs):
         try:

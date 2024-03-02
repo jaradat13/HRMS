@@ -1,4 +1,4 @@
-from .models import Employee
+from .models import Employee, Nationality, Certification, Degree
 from django.contrib import admin
 from django.utils.html import format_html
 
@@ -18,3 +18,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Employee)
+admin.site.register(Nationality)
+admin.site.register(Certification)
+admin.site.register(Degree)
+

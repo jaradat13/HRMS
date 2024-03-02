@@ -32,7 +32,6 @@
                     <td>{{ employee.employee_id }}</td>
                     <td>{{ employee.department }}</td>
                     <td><a href="{% url 'employee-detail' employee.employee_id %}" class="btn btn-primary btn-sm">View Record</a></td>
-                    <td><a href="{% url 'employee_history' employee.employee_id %}" class="btn btn-primary btn-sm">View History</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

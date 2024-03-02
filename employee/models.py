@@ -1,6 +1,6 @@
 from auditlog.models import LogEntry
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from deductions.models import Deductions
@@ -35,6 +35,34 @@ def validate_file_size(value):
         raise ValidationError(_("The maximum file size that can be uploaded is 10MB."))
 
 
+class Nationality(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Degree(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Certification(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class EmploymentType(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Employee(models.Model):
     GENDER_CHOICES = (
         ('M', _('Male')),
@@ -48,33 +76,12 @@ class Employee(models.Model):
         ('W', _('Widowed')),
     )
 
-    DEGREE_CHOICES = (
-        ('HS', _('High school')),
-        ('AD', _('Associate / Diploma')),
-        ('BA', _('Bachelor')),
-        ('MA', _('Master')),
-        ('PHD', _('Doctorate (Ph.D.)')),
-    )
-    NATIONALITY_CHOICES = (
-        ('Jordan', _('Jordan')),
-        ('USA', _('United States')),
-        ('UK', _('United Kingdom')),
-        # Add other nationalities as needed
-    )
-    EMPLOYMENT_TYPE_CHOICES = (
-        ('FT', _('Full-Time')),
-        ('PT', _('Part-Time')),
-        ('CT', _('Contract')),
-        ('INT', _('Intern')),
-        ('OTH', _('Other')),
-    )
     employee_id = models.BigAutoField(_('Employee ID'), primary_key=True, default=None)
     first_name = models.CharField(_('First name'), max_length=25)
     second_name = models.CharField(_('Second name'), max_length=25, blank=True, null=True)
     last_name = models.CharField(_('Last name'), max_length=25, blank=True, null=True)
     date_of_birth = models.DateField(_('Date of birth'), default=None)
-    nationality = models.CharField(_('Nationality'), max_length=25, choices=NATIONALITY_CHOICES, default=None,
-                                   blank=True, null=True)
+    nationality = models.ForeignKey(Nationality, on_delete=models.SET_NULL, null=True)
     national_id_number = models.IntegerField(_('National ID Number'), unique=False, blank=True, null=True)
     id_expiry_date = models.DateField(_('ID Expiry Date'), default=None)
     gender = models.CharField(_('Gender'), max_length=1, choices=GENDER_CHOICES, default='', blank=False, null=False)
@@ -90,14 +97,14 @@ class Employee(models.Model):
                                    related_name='employees')
     section = models.ForeignKey('core.Section', on_delete=models.SET_NULL, null=True, blank=True)
     job_title = models.ForeignKey('core.JobTitle', on_delete=models.SET_NULL, null=True, blank=True)
-    employment_type = models.CharField(_('Employment Type'), max_length=3, choices=EMPLOYMENT_TYPE_CHOICES, null=True)
+    employment_type = models.ForeignKey(EmploymentType, on_delete=models.SET_NULL, null=True)
     is_department_head = models.BooleanField(_('Is Department Head'), default=False)
     hire_date = models.DateField(_('Hire date'), default=None)
     contract_expiry_date = models.DateField(_('Contract Expiry Date'), default=None, null=True, blank=True)
 
     is_active = models.BooleanField(_('Is active'), default=True)
-    degrees = models.CharField(_('Degrees'), max_length=3, choices=DEGREE_CHOICES, null=True, blank=True)
-    certifications = models.CharField(_('Certifications'), max_length=100, blank=False, null=False, default=None)
+    degrees = models.ManyToManyField(Degree)
+    certifications = models.ManyToManyField(Certification)
     social_security_number = models.IntegerField(_('Social security number'), blank=False, null=False)
     tax_identification_number = models.IntegerField(_('Tax identification number'), blank=True, null=True)
     bank_name = models.CharField(_('Bank name'), max_length=100, blank=True, null=True)
@@ -141,5 +148,3 @@ class Employee(models.Model):
 
 
 auditlog.register(Employee)
-
-

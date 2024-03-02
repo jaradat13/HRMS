@@ -10,7 +10,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from openpyxl import Workbook
-from employee.models import Employee
+from employee.models import Employee, Nationality, EmploymentType, Degree, Certification
 from auditlog.models import LogEntry
 
 
@@ -77,50 +77,42 @@ def employee_search(request):
 
 
 class ExportEmployeesExcelView(View):
-    @staticmethod
     def get(self, request, *args, **kwargs):
-        # Query all employees
         employees = Employee.objects.all()
-
-        # Create a new Excel workbook and select the active worksheet
         workbook = Workbook()
         worksheet = workbook.active
 
-        # Define column headers
         headers = ['ID Number', 'First Name', 'Second Name', 'Last Name', 'Date of Birth',
                    'Nationality', 'National ID Number', 'ID Expiry Date', 'Gender', 'Marital Status',
                    'Phone Number', 'Email', 'Address', 'Emergency Contact Name', 'Emergency Contact Phone',
-                   'Number of Dependents', 'Department', 'Section', 'Job Title', 'Employment Type', 'Hire Date',
-                   'Contract Expiry Date', 'Degrees', 'Certifications', 'Social Security Number',
+                   'Number of Dependents', 'Department', 'Section', 'Job Title', 'EmploymentType', 'Hire Date',
+                   'Contract Expiry Date', 'Degree', 'Certification', 'Social Security Number',
                    'Tax identification Number', 'Bank Name', 'Bank Branch', 'Bank Account Number',
                    'Basic Salary', 'Mobile Allowance', 'Housing Allowance', 'Travel Allowance', 'Uniform Allowance',
                    'Medical Allowance', 'Other Allowance']
-
         worksheet.append(headers)
 
-        # Add employee data to the worksheet
         for employee in employees:
-            # Serialize allowances
             allowances = [
-                employee.mobile_allowance.amount,
-                employee.housing_allowance.amount,
-                employee.travel_allowance.amount,
-                employee.uniform_allowance.amount,
-                employee.medical_allowance.amount,
-                employee.other_allowance.amount
+                employee.mobile_allowance.amount if employee.mobile_allowance else None,
+                employee.housing_allowance.amount if employee.housing_allowance else None,
+                employee.travel_allowance.amount if employee.travel_allowance else None,
+                employee.uniform_allowance.amount if employee.uniform_allowance else None,
+                employee.medical_allowance.amount if employee.medical_allowance else None,
+                employee.other_allowance.amount if employee.other_allowance else None
             ]
 
             row_data = [
                 employee.employee_id, employee.first_name, employee.second_name, employee.last_name,
-                employee.date_of_birth, employee.nationality, employee.national_id_number,
+                employee.date_of_birth, employee.nationality.name, employee.national_id_number,
                 employee.id_expiry_date, employee.gender, employee.marital_status,
                 employee.phone_number, employee.email, employee.address,
                 employee.emergency_contact_name, employee.emergency_contact_phone,
                 employee.number_of_dependents, employee.department.name,
                 employee.section.name, employee.job_title.name,
-                employee.employment_type, employee.hire_date,
-                employee.contract_expiry_date, employee.degrees,
-                employee.certifications, employee.social_security_number,
+                employee.employment_type.name, employee.hire_date,
+                employee.contract_expiry_date, employee.degree.name,
+                employee.certification.name, employee.social_security_number,
                 employee.tax_identification_number, employee.bank_name,
                 employee.bank_branch, employee.bank_account_number,
                 employee.basic_salary, *allowances
@@ -128,15 +120,17 @@ class ExportEmployeesExcelView(View):
 
             worksheet.append(row_data)
 
-        # Create a response object
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename="employees.xlsx"'
-
-        # Save the workbook content to the response
+        response['Content-Disposition'] = 'attachment; filename=employees.xlsx'
         workbook.save(response)
-
         return response
 
+
+
+from django.db import transaction
+from .models import Employee
+from .forms import EmployeeImportForm
+import pandas as pd
 
 @transaction.atomic
 def import_employees(request):
@@ -156,12 +150,20 @@ def import_employees(request):
                 department_name = row.get('Department', 'Default Department')
                 department, _ = Department.objects.get_or_create(name=department_name)
 
-                section_name = row.get('Section', 'Default Section')
+                nationality_name = row.get('Nationality', 'Default')
+                nationality, _ = Nationality.objects.get_or_create(name=nationality_name)
 
-                try:
-                    section = Section.objects.get(name=section_name, department=department)
-                except Section.DoesNotExist:
-                    section = Section.objects.create(name=section_name, department=department)
+                employment_type_name = row.get('EmploymentType', 'Default')
+                employment_type, _ = EmploymentType.objects.get_or_create(name=employment_type_name)
+
+                degree_name = row.get('Degree', 'Default')
+                degree, _ = Degree.objects.get_or_create(name=degree_name)
+
+                certification_name = row.get('Certification', 'Default')
+                certification, _ = Certification.objects.get_or_create(name=certification_name)
+
+                section_name = row.get('Section', 'Default Section')
+                section, _ = Section.objects.get_or_create(name=section_name, department=department)
 
                 job_title_name = row.get('Job Title', 'Default Job Title')
                 job_title, _ = JobTitle.objects.get_or_create(name=job_title_name, department=department)
@@ -192,7 +194,7 @@ def import_employees(request):
                     second_name=row['Second Name'],
                     last_name=row['Last Name'],
                     date_of_birth=row['Date of Birth'],
-                    nationality=row['Nationality'],
+                    nationality=nationality,
                     national_id_number=row['National ID Number'],
                     id_expiry_date=row['ID Expiry Date'],
                     gender=row['Gender'],
@@ -203,11 +205,11 @@ def import_employees(request):
                     emergency_contact_name=row['Emergency Contact Name'],
                     emergency_contact_phone=row['Emergency Contact Phone'],
                     number_of_dependents=row['Number of Dependents'],
-                    employment_type=row['Employment Type'],
+                    employment_type=employment_type,
                     hire_date=row['Hire Date'],
                     contract_expiry_date=row['Contract Expiry Date'],
-                    degrees=row['Degrees'],
-                    certifications=row['Certifications'],
+                    degree=degree,
+                    certification=certification,
                     social_security_number=row['Social Security Number'],
                     tax_identification_number=row['Tax identification Number'],
                     bank_name=row['Bank Name'],
@@ -231,5 +233,6 @@ def import_employees(request):
     else:
         form = EmployeeImportForm()
     return render(request, 'employee/import_employees.html', {'form': form})
+
 
 

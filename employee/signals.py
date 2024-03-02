@@ -1,3 +1,5 @@
+import uuid
+
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
@@ -7,8 +9,11 @@ from .models import Employee
 @receiver(post_save, sender=Employee)
 def create_or_update_user(sender, instance, created, **kwargs):
     if created:
+        # Generate a unique username based on email
+        username = instance.email + '_' + str(uuid.uuid4())[:8]  # Appending a unique identifier
+
         # Create a new user
-        user = User.objects.create_user(username=instance.email, password=str(instance.employee_id))
+        user = User.objects.create_user(username=username, password=str(instance.employee_id))
         user.first_name = instance.first_name
         user.last_name = instance.last_name
         user.email = instance.email

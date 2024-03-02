@@ -103,8 +103,8 @@ class Employee(models.Model):
     contract_expiry_date = models.DateField(_('Contract Expiry Date'), default=None, null=True, blank=True)
 
     is_active = models.BooleanField(_('Is active'), default=True)
-    degrees = models.ManyToManyField(Degree)
-    certifications = models.ManyToManyField(Certification)
+    degree = models.ForeignKey(Degree, on_delete=models.SET_NULL, null=True, blank=True)
+    certification = models.ForeignKey(Certification, on_delete=models.SET_NULL, null=True, blank=True)
     social_security_number = models.IntegerField(_('Social security number'), blank=False, null=False)
     tax_identification_number = models.IntegerField(_('Tax identification number'), blank=True, null=True)
     bank_name = models.CharField(_('Bank name'), max_length=100, blank=True, null=True)

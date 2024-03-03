@@ -8,7 +8,7 @@ from django.db import models
 class AccountManager(models.Manager):
     def create_user_from_employee(self, employee):
         # Generate username based on employee's first name and last name
-        username = employee.first_name.lower() + employee.last_name.lower()
+        username = employee.first_name.lower()+'.' + employee.last_name.lower()
 
         # Generate a random password (you can use more secure methods)
         import random
@@ -20,6 +20,7 @@ class AccountManager(models.Manager):
 
         # Assign the user to a group based on the employee's department name
         department_group_name = employee.department.name.lower().replace(' ', '_')
+
         group, created = Group.objects.get_or_create(name=department_group_name)
         user.groups.add(group)
 
@@ -40,6 +41,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(default=None, blank=True, null=True)
+
 
     # Add more fields as needed (e.g., address, profile picture, etc.)
 

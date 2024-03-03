@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import AccountManager
 from deductions.models import Deductions
 from socialsecurity.models import EmployeeSSPercentage
 from incometax.models import IncomeTaxPercentage
@@ -138,6 +140,12 @@ class Employee(models.Model):
                                       validators=[validate_file_size, validate_file_extension])
     copy_of_visas = models.FileField(_('Copy of visas'), upload_to='media/visas/', null=True, blank=True,
                                      validators=[validate_file_size, validate_file_extension])
+
+    objects = models.Manager()
+    account_manager = AccountManager()
+
+    def create_user(self):
+        return AccountManager.create_user_from_employee(self)
 
     class Meta:
         verbose_name = _('Employee')

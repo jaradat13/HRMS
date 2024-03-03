@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     'deductions',
     'auditlog',
+    'accounts',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

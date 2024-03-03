@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import login_view, logout_view
 
@@ -37,6 +37,7 @@ urlpatterns = [
     path('jobtitle/<int:pk>/update/', views.jobtitle_update_view, name='jobtitle-update'),
     path('jobtitle/<int:pk>/delete/', views.jobtitle_delete_view, name='jobtitle-delete'),
 
+    path('accounts/', include('django.contrib.auth.urls')),  # Include Django's built-in auth URLs for password reset
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
 ]

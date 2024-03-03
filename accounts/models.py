@@ -1,7 +1,8 @@
+from django.core.mail import send_mail
 from django.contrib.auth.models import User, Group
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
-import random
-import string
 
 
 class AccountManager(models.Manager):
@@ -10,7 +11,8 @@ class AccountManager(models.Manager):
         username = employee.first_name.lower() + employee.last_name.lower()
 
         # Generate a random password (you can use more secure methods)
-
+        import random
+        import string
         password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
         # Create the user
@@ -21,7 +23,25 @@ class AccountManager(models.Manager):
         group, created = Group.objects.get_or_create(name=department_group_name)
         user.groups.add(group)
 
+        # Send email notification
+        subject = 'Your Account Details'
+        message = f'Your username is {username} and your password is {password}.'
+        sender_email = settings.EMAIL_HOST_USER
+        recipient_email = employee.email
+        send_mail(subject, message, sender_email, [recipient_email])
+        if not hasattr(user, 'userprofile'):
+            UserProfile.objects.create(user=user, phone_number=employee.phone_number)
+
         return user
 
-class Test(models.Model):
-    pass
+
+class UserProfile(models.Model):
+    employee = models.ForeignKey("employee.Employee", on_delete=models.CASCADE, default=None)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(default=None, blank=True, null=True)
+
+    # Add more fields as needed (e.g., address, profile picture, etc.)
+
+    def __str__(self):
+        return str(self.user)

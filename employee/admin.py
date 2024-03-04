@@ -1,4 +1,4 @@
-from .models import Employee, Nationality, Certification, Degree
+from .models import Employee, Nationality, Certification, Degree, EmploymentType
 from django.contrib import admin
 from django.utils.html import format_html
 
@@ -21,4 +21,5 @@ admin.site.register(Employee)
 admin.site.register(Nationality)
 admin.site.register(Certification)
 admin.site.register(Degree)
+admin.site.register(EmploymentType)
 

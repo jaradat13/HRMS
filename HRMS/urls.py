@@ -11,6 +11,5 @@ urlpatterns = [
                   path('', include('incometax.urls')),
                   path('', include('socialsecurity.urls')),
                   path('', include('payroll.urls')),
-                  path('', include('accounts.urls')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

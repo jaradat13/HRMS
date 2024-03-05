@@ -5,7 +5,7 @@
     </li>
     {% if user.is_authenticated %}
       <li class="nav-item">
-        <span class="nav-link">Welcome, {{ user }}</span>
+        <span class="nav-link">Welcome, {{ user.first_name }}</span>
       </li>
         <li class="nav-item">
         <a class="nav-link" href="{% url 'change_password' %}">Change Password</a>

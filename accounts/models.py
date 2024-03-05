@@ -1,6 +1,15 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from employee.models import Employee  # Assuming your Employee model is in employee.models
+from django.utils.translation import gettext_lazy as _
+
+
+def validate_image_size(value):
+    filesize = value.size
+
+    if filesize > 5 * 1024 * 1024:  # 5MB
+        raise ValidationError(_("The maximum file size that can be uploaded is 5MB."))
 
 
 class UserProfile(models.Model):
@@ -16,6 +25,8 @@ class UserProfile(models.Model):
     bank_name = models.CharField(max_length=100, blank=True, null=True)
     bank_branch = models.CharField(max_length=100, blank=True, null=True)
     bank_account_number = models.CharField(max_length=100, blank=True, null=True)
+    image = models.ImageField(upload_to='media/employees_images/', null=True, blank=True,
+                              validators=[validate_image_size], default='default.jpg')
 
     class Meta:
         verbose_name = 'User Profile'

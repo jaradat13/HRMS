@@ -1,4 +1,31 @@
-venv/venv/
-db.sqlite3
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Django/local configuration
 .env
-__pycache__
+.env.*
+!.env.example
+*.secret
+secrets/
+local_settings.py
+
+# Local databases
+db.sqlite3
+*.sqlite3
+*.sqlite
+*.db
+
+# User uploads and generated static files
+media/
+staticfiles/
+
+# IDE/editor files
+.idea/
+.vscode/
